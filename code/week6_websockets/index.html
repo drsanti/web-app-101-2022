@@ -1,0 +1,21 @@
+<html>
+<head>
+	<title>WebSocket Client</title>
+</head>
+<body>
+	<script>
+		const ws = new WebSocket("ws://127.0.0.1:9099", "realtime");
+		ws.onopen = function (event) {
+			console.log("Connected")
+		}
+
+		ws.onmessage = function (message, x) {
+			console.log(message.data);
+		}
+
+		/**
+		 * CODE CODE CODE
+		 */
+	</script>
+</body>
+</html>

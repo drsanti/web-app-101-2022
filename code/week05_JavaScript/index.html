@@ -1,0 +1,55 @@
+<html>
+<head>
+	<title>Week5 JavaScript</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+
+
+	<script>
+		const NUM = 8;
+		const W = 20;
+		const H = 20;
+		const G = 2;
+
+		let leds = [];
+
+		for (let i = 0; i < NUM; i++) {
+
+			let led = document.createElement("div");
+			led.style.position = "absolute";
+			led.style.background = "red";
+			led.style.width = W + "px";
+			led.style.height = H + "px";
+			led.style.left = G + (i * (W + G)) + "px";
+			led.style.top = "10px";
+			led.style.borderRadius = W / 2 + "px";
+
+			document.body.appendChild(led);
+
+			leds.push(led);
+		}
+
+		let cnt = 0;
+		setInterval(function () {
+			cnt++;
+
+			let c = "";
+
+			if (cnt % 2 == 0) {
+				c = "lime";
+			}
+			else {
+				c = "red";
+			}
+
+			for (let i = 0; i < leds.length; i += 2) {
+				leds[i].style.background = c;
+			}
+
+		}, 500);
+
+
+	</script>
+</body>
+</html>
