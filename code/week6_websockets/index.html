@@ -3,19 +3,25 @@
 	<title>WebSocket Client</title>
 </head>
 <body>
+	<progress id="pg" value="32" max="100"></progress>
 	<script>
+		const pg = document.getElementById("pg");
 		const ws = new WebSocket("ws://127.0.0.1:9099", "realtime");
 		ws.onopen = function (event) {
 			console.log("Connected")
 		}
 
-		ws.onmessage = function (message, x) {
-			console.log(message.data);
+		ws.onmessage = function (message) {
+			const data = JSON.parse(message.data);
+			pg.value = data.value;
 		}
 
-		/**
-		 * CODE CODE CODE
-		 */
+		setInterval(() => {
+			ws.send("get-sensor-3")
+		}, 1000);
+
+
+		// // // CODE CODE CODE
 	</script>
 </body>
 </html>

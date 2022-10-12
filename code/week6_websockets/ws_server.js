@@ -3,20 +3,33 @@
 
 // Client Example:
 /* 
-const ws = new WebSocket("ws://127.0.0.1:9099", "realtime");
-	ws.onopen = function (event) {
-		console.log("Connected")
-	}
+<html>
+<head>
+	<title>WebSocket Client</title>
+</head>
+<body>
+	<progress id="pg" value="32" max="100"></progress>
+	<script>
+		const pg = document.getElementById("pg");
+		const ws = new WebSocket("ws://127.0.0.1:9099", "realtime");
+		ws.onopen = function (event) {
+			console.log("Connected")
+		}
 
-	ws.onmessage = function (message, x) {
-		console.log(message.data);
-	}
+		ws.onmessage = function (message) {
+			const data = JSON.parse(message.data);
+			pg.value = data.value;
+		}
 
-	let index = 1;
-	setInterval(() => {
-		ws.send(`get-sensor-${index}`);
-		index = index >= 3 ? 1 : index + 1;
-	}, 1000)
+		setInterval(() => {
+			ws.send("get-sensor-3")
+		}, 1000);
+
+		// // // CODE CODE CODE
+
+	</script >
+</body >
+</html >
 */
 
 const WebSocketServer = require('websocket').server;
@@ -76,12 +89,12 @@ const processAndRespond = (con, msg) => {
 			return (Math.random() * 100).toFixed(3);
 		}
 	}
-	const response = (conn, data) => {
+	const response = (conn, data, type) => {
 		console.log(`Response: ${data}`);
-		conn.sendUTF(data);
+		conn.send(JSON.stringify({ type: type, value: data }));
 	}
 	const generateAndResponse = (conn, type) => {
-		response(conn, generate(type));
+		response(conn, generate(type), type);
 	}
 	console.log(`Request:  ${msg}`);
 	if (msg.indexOf("get-sensor-") === 0) {
