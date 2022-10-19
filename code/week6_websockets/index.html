@@ -1,27 +1,64 @@
 <html>
 <head>
 	<title>WebSocket Client</title>
+	<style>
+		#led {
+			width: 50px;
+			height: 50px;
+			position: absolute;
+			border: 2px solid black;
+			border-radius: 27px;
+		}
+
+		.led-on {
+			background-color: red;
+		}
+
+		.led-off {
+			background-color: rgb(68, 6, 6);
+		}
+	</style>
 </head>
 <body>
-	<progress id="pg" value="32" max="100"></progress>
+
+	<progress id="pg" value="32" , max="100"></progress>
+
+	<div id="led"></div>
+
+
 	<script>
+
 		const pg = document.getElementById("pg");
+		const led = document.getElementById("led");
+
 		const ws = new WebSocket("ws://127.0.0.1:9099", "realtime");
+
 		ws.onopen = function (event) {
-			console.log("Connected")
+			console.log("Connected to ws://127.0.0.1:9099");
 		}
 
 		ws.onmessage = function (message) {
 			const data = JSON.parse(message.data);
-			pg.value = data.value;
+
+			console.log(data.value);
+
+			if (data.type == 3) {
+				pg.value = data.value;
+			}
+			else if (data.type == 1) {
+				led.className = data.value ? "led-on" : "led-off";
+			}
 		}
 
+		// APIs
+		// 3: "get-sensor-3" 0.0-99.99999
+		// 2: "get-sensor-2" 0.0-0.99999
+		// 1: "get-sensor-1" true/false
 		setInterval(() => {
-			ws.send("get-sensor-3")
+			ws.send("get-sensor-1");
+			ws.send("get-sensor-3");
 		}, 1000);
 
-
-		// // // CODE CODE CODE
 	</script>
 </body>
 </html>

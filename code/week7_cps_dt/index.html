@@ -1,0 +1,26 @@
+<!-- 
+	0) Run npm install
+	1) Run ws_server.js
+	2) Run apps/sim/index.html
+	3) Run index.html
+
+ -->
+
+<html>
+<head>
+	<title>CPS DT</title>
+</head>
+<body>
+	<script>
+		const ws = new WebSocket("ws://127.0.0.1:3033");
+		ws.onopen = function (event) {
+			console.log("Connected to ws://127.0.0.1:3033");
+		}
+
+		ws.onmessage = function (message) {
+			const data = JSON.parse(message.data);
+			console.log(data.type, data.id, data.value);
+		}
+	</script>
+</body>
+</html>
